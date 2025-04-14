@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "722554769023",
+    "project_id": "brain-bridge-140b8",
+    "storage_bucket": "brain-bridge-140b8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722554769023:android:69f5a50a7191df9d3bf94a",
+        "android_client_info": {
+          "package_name": "com.example.brain_bridge_update"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcX9ruLOVutZSiSqxsmWaktbaklxUTX0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
