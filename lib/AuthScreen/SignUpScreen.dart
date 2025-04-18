@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:email_validator/email_validator.dart';
-
 import '../widgets/user_image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -19,6 +19,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailController = TextEditingController();
 
   @override
   void dispose() {
@@ -76,6 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 30),
               // First Name Field
               TextFormField(
+                controller: _firstNameController,
                 decoration: InputDecoration(
                   prefixIcon:
                       const Icon(Icons.person, color: Colors.blueAccent),
@@ -99,6 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 15),
               // Last Name Field
               TextFormField(
+                controller: _lastNameController,
                 decoration: InputDecoration(
                   prefixIcon:
                       const Icon(Icons.person, color: Colors.blueAccent),
@@ -122,6 +127,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 15),
               // Email Field
               TextFormField(
+                controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.email, color: Colors.blueAccent),
@@ -170,15 +176,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Password is required';
-                  } else if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}\$')
-                      .hasMatch(value)) {
-                    return 'Password must be at least 8 characters, include letters and numbers';
-                  }
-                  return null;
-                },
+                // validator: (value) {
+                //   if (value == null || value.isEmpty) {
+                //     return 'Password is required';
+                //   } else if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}\$')
+                //       .hasMatch(value)) {
+                //     return 'Password must be at least 8 characters, include letters and numbers';
+                //   }
+                //   return null;
+                // },
               ),
               const SizedBox(height: 15),
               // Confirm Password Field
@@ -207,14 +213,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please confirm your password';
-                  } else if (value != _passwordController.text) {
-                    return 'Passwords do not match';
-                  }
-                  return null;
-                },
+                // validator: (value) {
+                //   if (value == null || value.isEmpty) {
+                //     return 'Please confirm your password';
+                //   } else if (value != _passwordController.text) {
+                //     return 'Passwords do not match';
+                //   }
+                //   return null;
+                // },
               ),
               const SizedBox(height: 30),
               // Sign Up Button
@@ -229,14 +235,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     vertical: 15,
                   ),
                 ),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Add sign-up functionality
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Sign-up successful!')),
-                    );
-                  }
-                },
+                onPressed: _submitSignUpForm,
+                // () {
+                //   if (_formKey.currentState!.validate()) {
+                //     // Add sign-up functionality
+                //     ScaffoldMessenger.of(context).showSnackBar(
+                //       const SnackBar(content: Text('Sign-up successful!')),
+                //     );
+                //   }
+                // },
                 child: Text(
                   "Sign Up",
                   style: GoogleFonts.poppins(
@@ -277,5 +284,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     ));
+  }
+
+  Future<void> _submitSignUpForm() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    try {
+      // 1. Create user with Firebase Auth
+      final authResult =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      final userId = authResult.user!.uid;
+
+      print("✅ Firebase Auth: User created with UID: $userId");
+
+      // 2. Save user data to Firestore (no image)
+      await FirebaseFirestore.instance.collection('users').doc(userId).set({
+        'first_name': _firstNameController.text.trim(),
+        'last_name': _lastNameController.text.trim(),
+        'email': _emailController.text.trim(),
+        'created_at': Timestamp.now(),
+      });
+
+      print("✅ Firestore: User data saved successfully for UID: $userId");
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Sign-up successful!')),
+      );
+
+      // Optional navigation
+      // Navigator.pushReplacement(...);
+    } catch (error) {
+      print("❌ Error during sign-up: $error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${error.toString()}')),
+      );
+    }
   }
 }
