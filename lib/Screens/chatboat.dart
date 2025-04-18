@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 
 class ChatboatScreen extends StatefulWidget {
   const ChatboatScreen({super.key});
@@ -9,7 +10,40 @@ class ChatboatScreen extends StatefulWidget {
 
 class _ChatboatScreenState extends State<ChatboatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  final List<Map<String, String>> _messages = []; // Stores user and AI messages
+  final List<Map<String, String>> _messages = [];
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Gemini.init(
+      apiKey: 'AIzaSyDxi6ajVL3B6tRIUdfGkk_yojP9fu1NR9c',
+    );
+  }
+
+  Future<void> sendMessageToGemini(String message) async {
+    setState(() => _isLoading = true);
+
+    try {
+      final response = await Gemini.instance.text(message);
+
+      setState(() {
+        _messages.add({
+          'sender': 'ai',
+          'message': response?.output ?? 'No response from Gemini',
+        });
+      });
+    } catch (e) {
+      setState(() {
+        _messages.add({
+          'sender': 'ai',
+          'message': 'Error: ${e.toString()}',
+        });
+      });
+    }
+
+    setState(() => _isLoading = false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +54,6 @@ class _ChatboatScreenState extends State<ChatboatScreen> {
         centerTitle: true,
       ),
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.blueAccent, Colors.cyan],
@@ -44,9 +76,7 @@ class _ChatboatScreenState extends State<ChatboatScreen> {
                         : Alignment.centerLeft,
                     child: Container(
                       margin: const EdgeInsets.symmetric(
-                        vertical: 5,
-                        horizontal: 10,
-                      ),
+                          vertical: 5, horizontal: 10),
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: isUserMessage
@@ -70,6 +100,11 @@ class _ChatboatScreenState extends State<ChatboatScreen> {
                 },
               ),
             ),
+            if (_isLoading)
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CircularProgressIndicator(color: Colors.white),
+              ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Row(
@@ -96,18 +131,8 @@ class _ChatboatScreenState extends State<ChatboatScreen> {
                         setState(() {
                           _messages.add({'sender': 'user', 'message': message});
                           _messageController.clear();
-
-                          // Add placeholder AI response for now
-                          Future.delayed(const Duration(milliseconds: 500), () {
-                            setState(() {
-                              _messages.add({
-                                'sender': 'ai',
-                                'message':
-                                    "This is a placeholder response from AI."
-                              });
-                            });
-                          });
                         });
+                        sendMessageToGemini(message);
                       }
                     },
                     backgroundColor: Colors.blueAccent,

@@ -9,7 +9,6 @@ class PlaylistScreen extends StatefulWidget {
 }
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
-  // Dropdown values for language selection
   final List<String> languages = [
     'Flutter',
     'C++',
@@ -19,167 +18,130 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   ];
   String selectedLanguage = 'Flutter';
 
-  // Map of playlists for each language
-  final Map<String, List<Map<String, String>>> playlists = {
-    'Flutter': [
-      {
-        'title': 'Flutter Basics Tutorial',
-        'thumbnail':
-            'https://img.youtube.com/vi/fq4N0hgOWzU/0.jpg', // Example thumbnail
-        'url': 'https://youtu.be/eVm10iYZsiE?si=OVlqdWbqIfLncH19',
-      },
-      {
-        'title': 'Flutter State Management',
-        'thumbnail': 'https://img.youtube.com/vi/ljYFEOxMpiI/0.jpg',
-        'url': 'https://www.youtube.com/watch?v=ljYFEOxMpiI',
-      },
-    ],
-    'C++': [
-      {
-        'title': 'C++ Basics for Beginners',
-        'thumbnail': 'https://img.youtube.com/vi/mUQZ1qmKlLY/0.jpg',
-        'url': 'https://www.youtube.com/watch?v=mUQZ1qmKlLY',
-      },
-      {
-        'title': 'Advanced C++ Techniques',
-        'thumbnail': 'https://img.youtube.com/vi/3xI7DroCPLk/0.jpg',
-        'url': 'https://www.youtube.com/watch?v=3xI7DroCPLk',
-      },
-    ],
-    'Python': [
-      {
-        'title': 'Python Programming Tutorial',
-        'thumbnail': 'https://img.youtube.com/vi/_uQrJ0TkZlc/0.jpg',
-        'url': 'https://www.youtube.com/watch?v=_uQrJ0TkZlc',
-      },
-    ],
-    'Laravel': [
-      {
-        'title': 'Laravel Crash Course',
-        'thumbnail': 'https://img.youtube.com/vi/M9lF2AIv8fU/0.jpg',
-        'url': 'https://www.youtube.com/watch?v=M9lF2AIv8fU',
-      },
-    ],
-    'React Native': [
-      {
-        'title': 'React Native Basics',
-        'thumbnail': 'https://img.youtube.com/vi/Emua4H_qtg8/0.jpg',
-        'url': 'https://www.youtube.com/watch?v=Emua4H_qtg8',
-      },
-    ],
-  };
+  final List<Map<String, String>> playlists = [
+    {
+      'title': 'Flutter Basics Tutorial',
+      'description': 'Learn Flutter from scratch.',
+      'url': 'https://www.youtube.com/watch?v=fq4N0hgOWzU',
+      'videoId': 'fq4N0hgOWzU',
+    },
+    {
+      'title': 'Flutter State Management',
+      'description': 'Understand state management in Flutter.',
+      'url': 'https://www.youtube.com/watch?v=d_m5csmrf7I',
+      'videoId': 'd_m5csmrf7I',
+    },
+    {
+      'title': 'C++ Basics for Beginners',
+      'description': 'Start learning C++ programming.',
+      'url': 'https://www.youtube.com/watch?v=mUQZ1qmKlLY',
+      'videoId': 'mUQZ1qmKlLY',
+    },
+    {
+      'title': 'Advanced C++ Techniques',
+      'description': 'Explore advanced concepts in C++.',
+      'url':
+          'https://youtube.com/playlist?list=PLfVsf4Bjg79AxxmZwARAh3J9SHNGarty8&si=U7UU-h5PZl5FF3Pr',
+      'videoId': 'tFYRTWFXSgY',
+    },
+    {
+      'title': 'Python Programming Tutorial',
+      'description': 'Master Python programming.',
+      'url': 'https://www.youtube.com/watch?v=_uQrJ0TkZlc',
+      'videoId': '_uQrJ0TkZlc',
+    },
+    {
+      'title': 'Laravel Crash Course',
+      'description': 'Learn Laravel from basics to advanced.',
+      'url': 'https://www.youtube.com/watch?v=MFh0Fd7BsjE',
+      'videoId': 'MFh0Fd7BsjE',
+    },
+    {
+      'title': 'React Native Basics',
+      'description': 'Start developing mobile apps with React Native.',
+      'url': 'https://www.youtube.com/watch?v=0-S5a0eXPoc',
+      'videoId': '0-S5a0eXPoc',
+    },
+  ];
+
+  Future<void> _launchURL(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Get the playlist for the selected language
-    final List<Map<String, String>> currentPlaylist =
-        playlists[selectedLanguage] ?? [];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Playlist Screen'),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: double.infinity,
-              height: 150,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.blueAccent, Colors.cyan],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  "Playlist of FLutter",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Container(
-              width: double.infinity,
-              height: 150,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.blueAccent, Colors.cyan],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  "Playlist of React Native",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Container(
-              width: double.infinity,
-              height: 150,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.blueAccent, Colors.cyan],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  "Playlist of Laravel",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Container(
-              width: double.infinity,
-              height: 150,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.blueAccent, Colors.cyan],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  "Playlist of Java Script",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: playlists.length,
+                itemBuilder: (context, index) {
+                  final item = playlists[index];
+                  final thumbnail =
+                      'https://img.youtube.com/vi/${item['videoId']}/0.jpg';
+                  return InkWell(
+                    onTap: () => _launchURL(item['url']!),
+                    child: Card(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              bottomLeft: Radius.circular(12),
+                            ),
+                            child: Image.network(
+                              thumbnail,
+                              width: 120,
+                              height: 80,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) =>
+                                  const Icon(Icons.image_not_supported),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 4),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['title'] ?? '',
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    item['description'] ?? '',
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ],
