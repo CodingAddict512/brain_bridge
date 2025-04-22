@@ -1,4 +1,5 @@
 import 'package:brain_bridge_update/AuthScreen/LoginScreen.dart';
+import 'package:brain_bridge_update/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -60,14 +61,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  void _showThemeDialog(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Choose Theme"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: const Text("Light"),
+              onTap: () {
+                themeNotifier.value = ThemeMode.light;
+                prefs.setString('app_theme', 'light');
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text("Dark"),
+              onTap: () {
+                themeNotifier.value = ThemeMode.dark;
+                prefs.setString('app_theme', 'dark');
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text("System Default"),
+              onTap: () {
+                themeNotifier.value = ThemeMode.system;
+                prefs.setString('app_theme', 'system');
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Profile",
           style: TextStyle(
-            color: Colors.white,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black87
+                : Colors.white,
           ),
         ),
         backgroundColor: Colors.blueAccent,
@@ -84,9 +127,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         child: _isLoading
-            ? const Center(
+            ? Center(
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black87
+                      : Colors.white,
                 ),
               )
             : SingleChildScrollView(
@@ -97,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 450,
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Column(
@@ -111,8 +156,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   CircleAvatar(
                                     radius: 50,
-                                    backgroundColor: Colors.grey[300],
-                                    child: const Icon(Icons.person, size: 60),
+                                    // backgroundColor: ,
+                                    backgroundColor:
+                                        Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.black87
+                                            : Colors.grey[300],
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 60,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white30
+                                          : Colors.white,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -132,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     _email,
                                     style: const TextStyle(
                                       fontSize: 17,
-                                      color: Colors.black,
+                                      // color: Colors.black,
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
@@ -165,6 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             onTap: () {
+                              _showThemeDialog(context);
                               // Placeholder
                             },
                           ),
@@ -206,8 +264,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
 
-                        const Divider(
-                          color: Colors.black38,
+                        Divider(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white54
+                              : Colors.black38,
                         ),
 
                         InkWell(
@@ -245,7 +305,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
-                              color: Colors.grey[300],
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.black87
+                                  : Colors.grey[300],
                             ),
                             child: Center(
                               child: Row(

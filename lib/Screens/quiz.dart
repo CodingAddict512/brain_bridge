@@ -112,8 +112,16 @@ class _QuizScreenState extends State<QuizScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quiz Screen'),
+        title: Text(
+          'Quiz Screen',
+          style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black87
+                : Colors.white,
+          ),
+        ),
         centerTitle: true,
+        backgroundColor: Colors.blueAccent,
       ),
       body: Container(
         width: double.infinity,
@@ -137,7 +145,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
@@ -170,7 +178,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(

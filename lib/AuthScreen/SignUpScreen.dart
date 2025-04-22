@@ -63,7 +63,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Text(
                 "Create Your Account",
                 style: GoogleFonts.poppins(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black87
+                      : Colors.white,
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
@@ -73,7 +75,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 "Sign up to get started",
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.white70,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black87
+                      : Colors.white,
                 ),
               ),
               const SizedBox(height: 30),
@@ -85,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const Icon(Icons.person, color: Colors.blueAccent),
                   hintText: "Enter First Name",
                   filled: true,
-                  fillColor: Colors.white,
+                  // fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
@@ -109,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const Icon(Icons.person, color: Colors.blueAccent),
                   hintText: "Enter Last Name",
                   filled: true,
-                  fillColor: Colors.white,
+                  // fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
@@ -133,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   prefixIcon: const Icon(Icons.email, color: Colors.blueAccent),
                   hintText: "Enter Email Address",
                   filled: true,
-                  fillColor: Colors.white,
+                  // fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
@@ -157,7 +161,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   prefixIcon: const Icon(Icons.lock, color: Colors.blueAccent),
                   hintText: "Enter Password",
                   filled: true,
-                  fillColor: Colors.white,
+                  // fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
@@ -194,7 +198,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   prefixIcon: const Icon(Icons.lock, color: Colors.blueAccent),
                   hintText: "Confirm Password",
                   filled: true,
-                  fillColor: Colors.white,
+                  // fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
@@ -226,7 +230,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // Sign Up Button
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
+                  // backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -270,7 +274,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Text(
                     "Already have an account? ",
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.black87
+                          : Colors.white,
                       fontSize: 16,
                     ),
                   ),

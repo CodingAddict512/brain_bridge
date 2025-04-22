@@ -45,7 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     // App Logo or Icon
                     CircleAvatar(
                       radius: 50,
-                      backgroundColor: Colors.white,
+                      backgroundColor:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? Colors.black87
+                              : Colors.white,
                       child: Icon(
                         Icons.person,
                         size: 60,
@@ -59,7 +62,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 28,
-                        color: Colors.white,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black87
+                            : Colors.white,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -67,7 +72,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       "Login to continue",
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.white70,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black87
+                            : Colors.white,
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -79,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         prefixIcon: Icon(Icons.email, color: Colors.blueAccent),
                         hintText: "Enter Email Address",
                         filled: true,
-                        fillColor: Colors.white,
+                        // fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
@@ -95,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         prefixIcon: Icon(Icons.lock, color: Colors.blueAccent),
                         hintText: "Enter Password",
                         filled: true,
-                        fillColor: Colors.white,
+                        // fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
@@ -117,36 +124,36 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 10),
                     // Forgot Password
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          // Add forgot password functionality
-                        },
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ForgotPassword(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "Forgot Password?",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.centerRight,
+                    //   child: TextButton(
+                    //     onPressed: () {
+                    //       // Add forgot password functionality
+                    //     },
+                    //     child: GestureDetector(
+                    //       onTap: () {
+                    //         Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //             builder: (context) => ForgotPassword(),
+                    //           ),
+                    //         );
+                    //       },
+                    //       child: Text(
+                    //         "Forgot Password?",
+                    //         style: TextStyle(
+                    //           color: Colors.red,
+                    //           fontWeight: FontWeight.bold,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(height: 30),
                     // Login Button
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
+                        // backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),

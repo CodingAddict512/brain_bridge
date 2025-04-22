@@ -49,7 +49,15 @@ class _ChatboatScreenState extends State<ChatboatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Chat with AI"),
+        title: Text(
+          "Chat with AI",
+          style: TextStyle(
+            // color: Colors.white,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black87
+                : Colors.white,
+          ),
+        ),
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
       ),
@@ -81,7 +89,9 @@ class _ChatboatScreenState extends State<ChatboatScreen> {
                       decoration: BoxDecoration(
                         color: isUserMessage
                             ? Colors.blueAccent
-                            : Colors.grey[300],
+                            : Theme.of(context).brightness == Brightness.dark
+                                ? Colors.black87
+                                : Colors.grey[300],
                         borderRadius: BorderRadius.only(
                           topLeft: const Radius.circular(15),
                           topRight: const Radius.circular(15),
@@ -92,7 +102,11 @@ class _ChatboatScreenState extends State<ChatboatScreen> {
                       child: Text(
                         message['message']!,
                         style: TextStyle(
-                          color: isUserMessage ? Colors.white : Colors.black,
+                          color: isUserMessage
+                              ? Colors.white
+                              : Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
                         ),
                       ),
                     ),
@@ -115,7 +129,7 @@ class _ChatboatScreenState extends State<ChatboatScreen> {
                       decoration: InputDecoration(
                         hintText: "Type your message...",
                         filled: true,
-                        fillColor: Colors.grey[200],
+                        // fillColor: Colors.grey[200],
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
@@ -136,10 +150,15 @@ class _ChatboatScreenState extends State<ChatboatScreen> {
                       }
                     },
                     backgroundColor: Colors.blueAccent,
-                    child: const Icon(Icons.send, color: Colors.white),
+                    child: const Icon(
+                      Icons.send,
+                    ),
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 10,
             ),
           ],
         ),

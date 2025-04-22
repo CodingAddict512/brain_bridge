@@ -29,8 +29,8 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
       body: _screens[_selectedIndex],
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.blueAccent,
-        color: Colors.white,
-        buttonBackgroundColor: Colors.white,
+        color: Theme.of(context).cardColor,
+        buttonBackgroundColor: Theme.of(context).cardColor,
         animationDuration: const Duration(milliseconds: 300),
         items: const [
           Icon(Icons.quiz, size: 30, color: Colors.blueAccent),
