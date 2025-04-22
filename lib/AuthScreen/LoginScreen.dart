@@ -4,6 +4,7 @@ import 'package:brain_bridge_update/Screens/bottom_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -158,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
-                                color: Colors.blueAccent,
+                                color: Colors.white,
                                 strokeWidth: 2,
                               ),
                             )
@@ -218,12 +219,15 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      // Firebase Authentication
       final userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_email', _emailController.text.trim());
+      await prefs.setString('user_password', _passwordController.text.trim());
 
       print("✅ User logged in: ${userCredential.user!.uid}");
 
@@ -231,7 +235,6 @@ class _LoginScreenState extends State<LoginScreen> {
         const SnackBar(content: Text('Login successful!')),
       );
 
-      // Navigate to home screen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -240,12 +243,17 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } on FirebaseAuthException catch (e) {
       print("❌ Login error: $e");
+      print("⚠️ Error code: ${e.code}");
+
       String message = "An error occurred. Please try again.";
       if (e.code == 'user-not-found') {
         message = "No user found for that email.";
       } else if (e.code == 'wrong-password') {
         message = "Incorrect password.";
+      } else if (e.code == 'invalid-credential') {
+        message = "Invalid email or password.";
       }
+
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(message)));
     } catch (e) {

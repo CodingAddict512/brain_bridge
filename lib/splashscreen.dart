@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'package:brain_bridge_update/Onboarding.dart';
+import 'package:brain_bridge_update/Screens/bottom_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:is_first_run/is_first_run.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'AuthScreen/LoginScreen.dart';
 
@@ -61,12 +65,63 @@ class _SplashScreenState extends State<SplashScreen>
     ).animate(_colorController);
 
     // Set a timer for 10 seconds to navigate to the LoginPage
-    Timer(const Duration(seconds: 10), () {
+    // Timer(const Duration(seconds: 10), () {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => OnBoardingPage()),
+    //   );
+    // });
+    _startNavigation();
+  }
+
+  void _startNavigation() async {
+    bool firstRun = await IsFirstRun.isFirstRun();
+
+    // Delay for splash screen
+    await Future.delayed(const Duration(seconds: 3));
+
+    if (firstRun) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => OnBoardingPage()),
+        MaterialPageRoute(builder: (context) => const OnBoardingPage()),
       );
-    });
+    } else {
+      final prefs = await SharedPreferences.getInstance();
+      final savedEmail = prefs.getString('user_email') ?? '';
+      final savedPassword = prefs.getString('user_password') ?? '';
+
+      if (savedEmail.isNotEmpty && savedPassword.isNotEmpty) {
+        try {
+          // Try Firebase login with saved credentials
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: savedEmail,
+            password: savedPassword,
+          );
+
+          await prefs.setString('user_email', savedEmail);
+          await prefs.setString('user_password', savedPassword);
+          // Navigate to home screen on successful login
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BottomNavigationBarScreen()),
+          );
+        } on FirebaseAuthException catch (e) {
+          // If login fails, go to LoginScreen
+          print('Auto login failed: $e');
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        }
+      } else {
+        // If no saved credentials, go to LoginScreen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
+    }
   }
 
   @override

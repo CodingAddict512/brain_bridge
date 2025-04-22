@@ -127,46 +127,47 @@ class _QuizScreenState extends State<QuizScreen> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Dropdown for language selection
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 3,
-                      blurRadius: 5,
-                    ),
-                  ],
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Dropdown for language selection
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 3,
+                        blurRadius: 5,
+                      ),
+                    ],
+                  ),
+                  child: DropdownButton<String>(
+                    value: selectedLanguage,
+                    isExpanded: true,
+                    items: languages.map((String language) {
+                      return DropdownMenuItem<String>(
+                        value: language,
+                        child: Text(language),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedLanguage = newValue!;
+                      });
+                      loadQuizData(); // Reload quiz data when language changes
+                    },
+                  ),
                 ),
-                child: DropdownButton<String>(
-                  value: selectedLanguage,
-                  isExpanded: true,
-                  items: languages.map((String language) {
-                    return DropdownMenuItem<String>(
-                      value: language,
-                      child: Text(language),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedLanguage = newValue!;
-                    });
-                    loadQuizData(); // Reload quiz data when language changes
-                  },
-                ),
-              ),
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              // Display current question and options
-              Expanded(
-                child: Container(
+                // Display current question and options
+                Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -256,8 +257,8 @@ class _QuizScreenState extends State<QuizScreen> {
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

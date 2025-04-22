@@ -244,14 +244,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 //     );
                 //   }
                 // },
-                child: Text(
-                  "Sign Up",
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueAccent,
-                    fontSize: 18,
-                  ),
-                ),
+                child: _isLoading
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Text(
+                        "Sign Up",
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueAccent,
+                          fontSize: 18,
+                        ),
+                      ),
               ),
               const SizedBox(height: 20),
               // Already have an account
@@ -286,8 +295,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     ));
   }
 
+  bool _isLoading = false;
   Future<void> _submitSignUpForm() async {
     if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      _isLoading = true;
+    });
 
     try {
       // 1. Create user with Firebase Auth
@@ -314,13 +328,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         const SnackBar(content: Text('Sign-up successful!')),
       );
 
-      // Optional navigation
+      // Optional: Navigate to home screen
       // Navigator.pushReplacement(...);
     } catch (error) {
       print("❌ Error during sign-up: $error");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: ${error.toString()}')),
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 }
