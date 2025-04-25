@@ -89,7 +89,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
               ),
               const SizedBox(height: 8),
               const Text(
-                "Coding Addict",
+                "Aniee Khan",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -98,13 +98,13 @@ class _AboutUsPageState extends State<AboutUsPage> {
               ),
               const SizedBox(height: 16),
               GestureDetector(
-                onTap: () => _launchEmail("codingaddict512@gmail.com"),
+                onTap: () => _launchEmail("anieemkhan913@gmail.com"),
                 child: Row(
                   children: [
                     const Icon(Icons.email, color: Colors.white),
                     const SizedBox(width: 8),
                     Text(
-                      "codingaddict512@gmail.com",
+                      "anieemkhan913@gmail.com",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,

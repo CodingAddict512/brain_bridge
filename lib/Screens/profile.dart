@@ -154,21 +154,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               Column(
                                 children: [
-                                  CircleAvatar(
-                                    radius: 50,
-                                    // backgroundColor: ,
-                                    backgroundColor:
-                                        Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? Colors.black87
-                                            : Colors.grey[300],
-                                    child: Icon(
-                                      Icons.person,
-                                      size: 60,
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.white30
-                                          : Colors.white,
+                                  Container(
+                                    width: 80,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Image.asset(
+                                        "assets/images/logo.jpg",
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                 ],
